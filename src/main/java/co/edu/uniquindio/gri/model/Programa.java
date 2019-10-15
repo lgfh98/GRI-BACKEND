@@ -27,6 +27,13 @@ public class Programa implements Serializable {
 	@Column(name = "NOMBRE")
 	private String nombre;
 
+	@Column(name = "INFORMACIONGENERAL")
+	private String informaciongeneral;
+
+	/** The contacto. */
+	@Column(name = "CONTACTO")
+	private String contacto;
+
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "FACULTADES_ID")
 	private Facultad facultad;
@@ -37,9 +44,11 @@ public class Programa implements Serializable {
 	public Programa() {
 	}
 
-	public Programa(long id, String nombre, Facultad facultad) {
+	public Programa(long id, String nombre, Facultad facultad, String informaciongeneral, String contacto) {
 		this.id = id;
 		this.nombre = nombre;
+		this.informaciongeneral = informaciongeneral;
+		this.contacto = contacto;
 		this.facultad = facultad;
 	}
 
@@ -57,6 +66,22 @@ public class Programa implements Serializable {
 
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
+	}
+
+	public String getInformaciongeneral() {
+		return informaciongeneral;
+	}
+
+	public void setInformaciongeneral(String informaciongeneral) {
+		this.informaciongeneral = informaciongeneral;
+	}
+
+	public String getContacto() {
+		return contacto;
+	}
+
+	public void setContacto(String contacto) {
+		this.contacto = contacto;
 	}
 
 	public Facultad getFacultad() {
