@@ -44,11 +44,11 @@ public class Grupo implements Serializable {
 	@Column(name = "CATEGORIA", length = 300)
 	private String categoria;
 
-	@Column(name = "INFORMACIONGENERAL")
+	@Column(name = "INFORMACIONGENERAL", length = 2000)
 	private String informaciongeneral;
 
 	/** The contacto */
-	@Column(name = "CONTACTO")
+	@Column(name = "CONTACTO", length = 450)
 	private String contacto;
 
 	@ManyToMany(cascade = CascadeType.ALL)

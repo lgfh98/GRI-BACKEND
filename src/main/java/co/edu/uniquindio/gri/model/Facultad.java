@@ -24,13 +24,13 @@ public class Facultad implements Serializable {
 	@Column(name = "NOMBRE")
 	private String nombre;
 
-	@Column(name = "MISION")
+	@Column(name = "MISION", length = 2000)
 	private String mision;
 
-	@Column(name = "VISION")
+	@Column(name = "VISION", length = 2000)
 	private String vision;
 
-	@Column(name = "CONTACTO")
+	@Column(name = "CONTACTO", length = 450)
 	private String contacto;
 
 	@OneToMany(mappedBy = "facultad", cascade = CascadeType.MERGE)

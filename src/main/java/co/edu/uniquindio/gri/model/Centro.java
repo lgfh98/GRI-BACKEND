@@ -28,10 +28,10 @@ public class Centro implements Serializable {
 	@Column(name = "NOMBRE")
 	private String nombre;
 	
-	@Column(name="INFORMACIONGENERAL")
+	@Column(name="INFORMACIONGENERAL", length = 2000)
 	private String informaciongeneral;
 	
-	@Column(name="CONTACTO")
+	@Column(name="CONTACTO", length = 450)
 	private String contacto;
 
 	@ManyToOne(fetch = FetchType.EAGER)
