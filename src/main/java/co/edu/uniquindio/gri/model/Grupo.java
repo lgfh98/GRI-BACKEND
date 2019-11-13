@@ -17,7 +17,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption; 
+import org.hibernate.annotations.LazyCollectionOption;
 
 @Entity(name = "GRUPOS")
 @Table(name = "GRUPOS", schema = "gri")
@@ -44,17 +44,24 @@ public class Grupo implements Serializable {
 	@Column(name = "CATEGORIA", length = 300)
 	private String categoria;
 
+	@Column(name = "INFORMACIONGENERAL", length = 2000)
+	private String informaciongeneral;
+
+	/** The contacto */
+	@Column(name = "CONTACTO", length = 450)
+	private String contacto;
+
 	@ManyToMany(cascade = CascadeType.ALL)
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@JoinTable(name = "GRUPOS_LINEAS", joinColumns = { @JoinColumn(name = "GRUPOS_ID") }, inverseJoinColumns = {
 			@JoinColumn(name = "LINEASINVESTIGACION_ID") }, schema = "gri")
 	private List<LineasInvestigacion> lineasInvestigacion = new ArrayList<LineasInvestigacion>();
 
-	@OneToMany(mappedBy = "grupo", cascade = {CascadeType.MERGE,CascadeType.REMOVE})
-	@LazyCollection(LazyCollectionOption.FALSE) 
+	@OneToMany(mappedBy = "grupo", cascade = { CascadeType.MERGE, CascadeType.REMOVE })
+	@LazyCollection(LazyCollectionOption.FALSE)
 	private List<ProduccionGrupo> produccion = new ArrayList<ProduccionGrupo>();
 
-	@OneToMany(mappedBy = "grupo", cascade = {CascadeType.MERGE,CascadeType.REMOVE})
+	@OneToMany(mappedBy = "grupo", cascade = { CascadeType.MERGE, CascadeType.REMOVE })
 	@LazyCollection(LazyCollectionOption.FALSE)
 	private List<ProduccionBGrupo> produccionBibliografica = new ArrayList<ProduccionBGrupo>();
 
@@ -67,18 +74,21 @@ public class Grupo implements Serializable {
 			@JoinColumn(name = "PROGRAMAS_ID") }, schema = "gri")
 	private List<Programa> programas = new ArrayList<Programa>();
 
-	@OneToMany(mappedBy = "grupos", fetch= FetchType.EAGER)
+	@OneToMany(mappedBy = "grupos", fetch = FetchType.EAGER)
 	private List<GruposInves> investigadores = new ArrayList<GruposInves>();
 
 	public Grupo(long id, String nombre, String areaConocimiento, String anioFundacion, String lider, String categoria,
-			List<LineasInvestigacion> lineasInvestigacion, List<ProduccionGrupo> produccion,
-			List<ProduccionBGrupo> produccionBibliografica, Centro centro, List<GruposInves> investigadores) {
+			String informaciongeneral, String contacto, List<LineasInvestigacion> lineasInvestigacion,
+			List<ProduccionGrupo> produccion, List<ProduccionBGrupo> produccionBibliografica, Centro centro,
+			List<GruposInves> investigadores) {
 		this.id = id;
 		this.nombre = nombre;
 		this.areaConocimiento = areaConocimiento;
 		this.anioFundacion = anioFundacion;
 		this.lider = lider;
 		this.categoria = categoria;
+		this.informaciongeneral = informaciongeneral;
+		this.contacto = contacto;
 		this.lineasInvestigacion = lineasInvestigacion;
 		this.produccion = produccion;
 		this.produccionBibliografica = produccionBibliografica;
@@ -136,6 +146,22 @@ public class Grupo implements Serializable {
 
 	public void setCategoria(String categoria) {
 		this.categoria = categoria;
+	}
+
+	public String getInformaciongeneral() {
+		return informaciongeneral;
+	}
+
+	public void setInformaciongeneral(String informaciongeneral) {
+		this.informaciongeneral = informaciongeneral;
+	}
+
+	public String getContacto() {
+		return contacto;
+	}
+
+	public void setContacto(String contacto) {
+		this.contacto = contacto;
 	}
 
 	public List<LineasInvestigacion> getLineasInvestigacion() {
