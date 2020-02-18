@@ -24,6 +24,15 @@ public class Facultad implements Serializable {
 	@Column(name = "NOMBRE")
 	private String nombre;
 
+	@Column(name = "MISION", length = 2000)
+	private String mision;
+
+	@Column(name = "VISION", length = 2000)
+	private String vision;
+
+	@Column(name = "CONTACTO", length = 450)
+	private String contacto;
+
 	@OneToMany(mappedBy = "facultad", cascade = CascadeType.MERGE)
 	private List<Centro> centros = new ArrayList<>();
 
@@ -33,9 +42,12 @@ public class Facultad implements Serializable {
 	public Facultad() {
 	}
 
-	public Facultad(long id, String nombre) {
+	public Facultad(long id, String nombre, String mision, String vision, String contacto) {
 		this.id = id;
 		this.nombre = nombre;
+		this.mision = mision;
+		this.vision = vision;
+		this.contacto = contacto;
 	}
 
 	public long getId() {
@@ -48,6 +60,30 @@ public class Facultad implements Serializable {
 
 	public String getNombre() {
 		return nombre;
+	}
+
+	public String getMision() {
+		return mision;
+	}
+
+	public void setMision(String mision) {
+		this.mision = mision;
+	}
+
+	public String getVision() {
+		return vision;
+	}
+
+	public void setVision(String vision) {
+		this.vision = vision;
+	}
+
+	public String getContacto() {
+		return contacto;
+	}
+
+	public void setContacto(String contacto) {
+		this.contacto = contacto;
 	}
 
 	public void setNombre(String nombre) {
