@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Implementation-Title: GRISpring
 Implementation-Version: 0.0.1-SNAPSHOT
-Built-By: Ciro1396
+Built-By: jaren
 Implementation-Vendor-Id: co.edu.uniquindio
-Build-Jdk: 1.8.0_171
+Build-Jdk: 1.8.0_241
 Implementation-URL: http://maven.apache.org
 Created-By: Maven Integration for Eclipse
 Implementation-Vendor: Pivotal Software, Inc.

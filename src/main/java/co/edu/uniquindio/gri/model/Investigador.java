@@ -34,6 +34,9 @@ public class Investigador implements Serializable {
 	@Column(name = "CATEGORIA", length = 200)
 	private String categoria;
 
+	@Column(name = "SEXO", length = 50)
+	private String sexo; 
+	
 	@Column(name = "NIVELACADEMICO", length = 200)
 	private String nivelAcademico;
 
@@ -64,7 +67,7 @@ public class Investigador implements Serializable {
 	@Transient
 	public String nombreInvestigadorAux;
 
-	public Investigador(long id, String nombre, String categoria, String nivelAcademico, String pertenencia,
+	public Investigador(long id, String nombre, String categoria,String sexo, String nivelAcademico, String pertenencia,
 			List<Idiomas> idiomas, List<LineasInvestigacion> lineasInvestigacion, List<Produccion> producciones,
 			List<ProduccionB> produccionesBibliograficas, List<GruposInves> grupos) {
 		this.id = id;
@@ -73,6 +76,7 @@ public class Investigador implements Serializable {
 		this.nivelAcademico = nivelAcademico;
 		this.pertenencia = pertenencia;
 		this.idiomas = idiomas;
+		this.sexo = sexo;
 		this.lineasInvestigacion = lineasInvestigacion;
 		this.produccionesBibliograficas = produccionesBibliograficas;
 		this.grupos = grupos;
@@ -104,6 +108,15 @@ public class Investigador implements Serializable {
 
 	public void setCategoria(String categoria) {
 		this.categoria = categoria;
+	}
+	
+
+	public String getSexo() {
+		return sexo;
+	}
+
+	public void setSexo(String sexo) {
+		this.sexo = sexo;
 	}
 
 	public String getNivelAcademico() {
