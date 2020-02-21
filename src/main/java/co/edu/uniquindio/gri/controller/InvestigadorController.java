@@ -31,7 +31,7 @@ public class InvestigadorController {
 
 	@Async("executor2")
 	public Future<Investigador> extraer(String estado, String url) {
-		
+
 		Investigador investigador = new Investigador();
 
 		int statusConnectionCode = util.getStatusConnectionCode(url);
@@ -49,7 +49,7 @@ public class InvestigadorController {
 		} else {
 			System.out.println("El Status Code no es OK es: " + statusConnectionCode);
 		}
-		return  new AsyncResult<Investigador> (investigador);
+		return new AsyncResult<Investigador>(investigador);
 
 	}
 
@@ -105,6 +105,9 @@ public class InvestigadorController {
 					ArrayList<String> elemLineas = utils.ordenarArreglo(elem.toString());
 					extractor.extraerLineasInvestigacionI(elemLineas, investigador);
 
+				} else if (elem.text().contains("Sexo")) {
+					ArrayList<String> elemDatos = utils.ordenarArreglo(elem.toString());
+					elemInfoPersonal.addAll(elemDatos);
 				}
 			}
 
@@ -146,11 +149,10 @@ public class InvestigadorController {
 					ArrayList<String> elemParticipacionComite = utils.ordenarArreglo(elem.toString());
 					extractorEvaluacion.extraerPartipacionComitesI(elemParticipacionComite, investigador);
 
-				} else if (elem.text().contains("Par evaluador")
-						&& elem.text().contains("Ámbito:")) {
+				} else if (elem.text().contains("Par evaluador") && elem.text().contains("Ámbito:")) {
 					ArrayList<String> elemParEvaluador = utils.ordenarArreglo(elem.toString());
-					extractorEvaluacion.extraerParEvaluadorI(elemParEvaluador, investigador);			
-					
+					extractorEvaluacion.extraerParEvaluadorI(elemParEvaluador, investigador);
+
 				}
 
 				/*
@@ -304,7 +306,7 @@ public class InvestigadorController {
 				}
 
 			}
-			
+
 		} else if (estado.equals("NO ACTUAL")) {
 			for (Element elem : entradas) {
 
@@ -321,6 +323,10 @@ public class InvestigadorController {
 				if (elem.text().contains("Experiencia profesional")) {
 					ArrayList<String> elemDatos = utils.ordenarArreglo(elem.toString());
 					elemInfoPersonal.addAll(elemDatos);
+				} 
+				if (elem.text().contains("Sexo")) {
+					ArrayList<String> elemDatos = utils.ordenarArreglo(elem.toString());
+					elemInfoPersonal.addAll(elemDatos);
 				}
 			}
 
@@ -328,5 +334,5 @@ public class InvestigadorController {
 		}
 		return investigador;
 	}
-	
+
 }

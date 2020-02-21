@@ -72,27 +72,26 @@ public class ExtractorGenerales {
 				nomLinea = nomLinea.trim();
 
 				LineasInvestigacion lineaInvestigacion = new LineasInvestigacion();
-				int pos=utils.BuscarLineasRepetidas(nomLinea);
-				if (pos<0) {
+				int pos = utils.BuscarLineasRepetidas(nomLinea);
+				if (pos < 0) {
 					lineaInvestigacion.setNombre(nomLinea);
 					utils.getLineasInvestigacion().add(lineaInvestigacion);
 					lineas.add(lineaInvestigacion);
-				}else {
+				} else {
 					lineas.add(utils.getLineasInvestigacion().get(pos));
 				}
-				
+
 			}
 
 		}
 		grupo.setLineasInvestigacion(lineas);
 	}
 
-	
 	private InvestigadorController investigadorController;
-	
+
 	@Autowired
 	public ExtractorGenerales(@Lazy InvestigadorController investigadorController) {
-		this.investigadorController=investigadorController;
+		this.investigadorController = investigadorController;
 	}
 
 	/**
@@ -137,6 +136,7 @@ public class ExtractorGenerales {
 			investigador.setNombreInvestigadorAux(investigador.getNombre());
 			investigador.setId(id);
 			investigador.setCategoria("SIN CATEGORÍA");
+			investigador.setSexo("NO ESPECIFICADO");
 			investigador.setNivelAcademico("NO ESPECIFICADO");
 			investigador.setPertenencia("NO ESPECIFICADO");
 
@@ -164,11 +164,18 @@ public class ExtractorGenerales {
 					if (elemInfoPersonal.get(i).startsWith("FORMACIÓN ACADÉMICA")) {
 						investigador.setNivelAcademico(elemInfoPersonal.get(i + 1));
 					}
+					// Estraccion del sexo
+					if (elemInfoPersonal.get(i).startsWith("SEXO")) {
+
+						investigador.setSexo(elemInfoPersonal.get(i + 1));
+
+					}
 
 					try {
 						if (estado.equals("ACTUAL")) {
 							if (elemInfoPersonal.get(i).equals("UNIVERSIDAD DEL QUINDÍO")
-									&& (elemInfoPersonal.get(i + 2).contains("ACTUAL") || elemInfoPersonal.get(i + 2).endsWith("DE"))) {
+									&& (elemInfoPersonal.get(i + 2).contains("ACTUAL")
+											|| elemInfoPersonal.get(i + 2).endsWith("DE"))) {
 								pertenece = true;
 								investigador.setPertenencia("INVESTIGADOR INTERNO");
 							}
@@ -203,8 +210,7 @@ public class ExtractorGenerales {
 	/**
 	 * Metodo que extrae los idiomas con los que el investigador esta familiarizado
 	 * 
-	 * @param elem,
-	 *            Lista de elementos que contiene los idiomas del investigador
+	 * @param elem, Lista de elementos que contiene los idiomas del investigador
 	 */
 	public void extraerIdiomas(ArrayList<String> elem, Investigador investigador) {
 
@@ -260,12 +266,12 @@ public class ExtractorGenerales {
 					nomLinea = nomLinea.trim();
 
 					LineasInvestigacion lineaInvestigacion = new LineasInvestigacion();
-					int pos=utils.BuscarLineasRepetidas(nomLinea);
-					if (pos<0) {
+					int pos = utils.BuscarLineasRepetidas(nomLinea);
+					if (pos < 0) {
 						lineaInvestigacion.setNombre(nomLinea);
 						utils.getLineasInvestigacion().add(lineaInvestigacion);
 						lineas.add(lineaInvestigacion);
-					}else {
+					} else {
 						lineas.add(utils.getLineasInvestigacion().get(pos));
 					}
 				}
