@@ -15,6 +15,7 @@ import co.edu.uniquindio.gri.model.Grupo;
 import co.edu.uniquindio.gri.model.Idiomas;
 import co.edu.uniquindio.gri.model.Investigador;
 import co.edu.uniquindio.gri.model.LineasInvestigacion;
+import co.edu.uniquindio.gri.model.ReconocimientosInvestigador;
 import co.edu.uniquindio.gri.utils.ArrayUtils;
 
 @Service
@@ -250,6 +251,53 @@ public class ExtractorGenerales {
 			auxIdiomas.addAll(auxIdiomasTemp);
 			investigador.setIdiomas(auxIdiomas);
 		}
+	}
+
+	/**
+	 * Metodo que extrae los Reconocimientos con los que el investigador esta
+	 * familiarizado
+	 * 
+	 * @param elem, Lista de elementos que contiene los Reconocimientos del
+	 *              investigador
+	 */
+	public void extraerReconocimientos(ArrayList<String> elem, Investigador investigador) {
+
+		ArrayList<String> auxReconocimientoCadTemp = new ArrayList<String>();
+		ArrayList<ReconocimientosInvestigador> auxReconocimientoTemp = new ArrayList<ReconocimientosInvestigador>();
+
+		for (int i = 1; i < elem.size() - 1; i++) {
+
+			auxReconocimientoCadTemp = utils.organizarReconocimiento(elem.get(i));
+			ReconocimientosInvestigador reconocimiento = new ReconocimientosInvestigador();
+
+			try {
+
+				reconocimiento.setAnio(Integer.parseInt(auxReconocimientoCadTemp.get(0)));
+
+			} catch (Exception e) {
+				
+				
+				reconocimiento.setAnio(0);
+				
+
+			}
+			reconocimiento.setEntidad(auxReconocimientoCadTemp.get(1));
+			reconocimiento.setReconocimiento(auxReconocimientoCadTemp.get(2));
+			reconocimiento.setInvestigador(investigador);
+			auxReconocimientoTemp.add(reconocimiento);
+
+		}
+
+		List<ReconocimientosInvestigador> reconocimientosInves = investigador.getReconocimientos();
+
+		if (reconocimientosInves == null) {
+			investigador.setReconocimientos(auxReconocimientoTemp);
+		} else {
+
+			reconocimientosInves.addAll(auxReconocimientoTemp);
+			investigador.setReconocimientos(reconocimientosInves);
+		}
+
 	}
 
 	public void extraerLineasInvestigacionI(ArrayList<String> elem, Investigador investigador) {
