@@ -22,9 +22,9 @@ public class ArrayUtils {
 
 	@Autowired
 	FuzzyMatch fuzzyMatch;
-	
+
 	ArrayList<Investigador> investigadores = new ArrayList<>();
-	
+
 	ArrayList<LineasInvestigacion> lineasInvestigacion = new ArrayList<>();
 
 	public ArrayList<String> ordenarArreglo(String elem) {
@@ -37,8 +37,7 @@ public class ArrayUtils {
 	 * Método que elimina las etiquetas y caracteres especiales en la lista que
 	 * tiene la estructura de la pagina web
 	 * 
-	 * @param elementos,
-	 *            lista que contiene la estructura textual de la pagina web
+	 * @param elementos, lista que contiene la estructura textual de la pagina web
 	 * @return Lista con la estructura de la pagina web sin las etiquetas y los
 	 *         caracteres especiales
 	 */
@@ -134,8 +133,7 @@ public class ArrayUtils {
 	 * Metodo que elimina las etiquetas y caracteres especiales en la lista que
 	 * tiene la estructura de la pagina web del cvlac de cada investigador
 	 * 
-	 * @param elem,
-	 *            lista que contiene la estructura textual de la pagina web
+	 * @param elem, lista que contiene la estructura textual de la pagina web
 	 * @return Lista con la estructura de la pagina web sin las etiquetas y los
 	 *         caracteres especiales
 	 */
@@ -218,8 +216,7 @@ public class ArrayUtils {
 	 * Metodo Utilizado para extraer los autores de una publicacion, en casos
 	 * especiales donde la extraccion no es clara
 	 * 
-	 * @param autores,
-	 *            Cadena donde se encuentran los nombres de los autores
+	 * @param autores, Cadena donde se encuentran los nombres de los autores
 	 * @return Cadena con el nombre de los autores
 	 */
 	public String verificarAutores(String autores, Investigador investigador) {
@@ -322,10 +319,8 @@ public class ArrayUtils {
 	 * Método que identifica las producciones repetidas de los investigadores,
 	 * basándose en el algoritmo fuzzy wuzzy
 	 * 
-	 * @param elem,
-	 *            lista de las producciones del investigador
-	 * @param produccion,
-	 *            produccion a comparar
+	 * @param elem,       lista de las producciones del investigador
+	 * @param produccion, produccion a comparar
 	 */
 	public void identificarRepetidosI(ArrayList<Produccion> elem, Produccion produccion) {
 		String referencia = produccion.getReferencia();
@@ -364,7 +359,7 @@ public class ArrayUtils {
 		}
 	}
 
-	public int BuscarLineasRepetidas( String nombreLinea) {
+	public int BuscarLineasRepetidas(String nombreLinea) {
 		for (int j = 0; j < lineasInvestigacion.size(); j++) {
 			String nombreAux = lineasInvestigacion.get(j).getNombre();
 			if (fuzzyMatch.getRatio(nombreLinea, nombreAux) >= Constantes.FUZZY_MATCH_LINEAS) {
@@ -373,8 +368,6 @@ public class ArrayUtils {
 		}
 		return -1;
 	}
-
-
 
 	public List<ProduccionGrupo> verificarProducciones(int idTipo, List<ProduccionGrupo> producciones,
 			List<ProduccionGrupo> produccionesTemp) {
@@ -450,6 +443,55 @@ public class ArrayUtils {
 		return producciones;
 	}
 
+	public ArrayList<String> organizarReconocimiento(String reconocimiento) {
+
+		ArrayList<String> auxReconocimiento = new ArrayList<String>();
+
+		String anio = "";
+		String entidad = "";
+		String reconocimientoCad = "";
+		int limite = reconocimiento.length();
+
+		for (int i = reconocimiento.length() - 1; i >= 0; i--) {
+
+			if (reconocimiento.charAt(i) == '-') {
+
+				anio = reconocimiento.substring(i + 1, limite);
+				limite = i;
+			}
+			if (reconocimiento.charAt(i) == ',') {
+				entidad = reconocimiento.substring(i + 1, limite);
+				limite = i;
+				reconocimientoCad = reconocimiento.substring(0, limite);
+
+				i = -1;
+			}
+
+		}
+
+		auxReconocimiento.add(seleccionAnio(anio.trim()));
+		auxReconocimiento.add(entidad.trim());
+		auxReconocimiento.add(reconocimientoCad.trim());
+
+		return auxReconocimiento;
+
+	}
+
+	public String seleccionAnio(String cadena) {
+
+		String anio = "N/D";
+		for (int i = 0; i < cadena.length(); i++) {
+
+			if (cadena.charAt(i) >= 48 && cadena.charAt(i) <= 57) {
+				anio = cadena.substring(i, cadena.length());
+				break;
+			}
+
+		}
+		return anio;
+
+	}
+
 	public ArrayList<Investigador> getInvestigadores() {
 		return investigadores;
 	}
@@ -465,6 +507,5 @@ public class ArrayUtils {
 	public void setLineasInvestigacion(ArrayList<LineasInvestigacion> lineasInvestigacion) {
 		this.lineasInvestigacion = lineasInvestigacion;
 	}
-	
-	
+
 }

@@ -20,6 +20,7 @@ import co.edu.uniquindio.gri.extractor.ExtractorGenerales;
 import co.edu.uniquindio.gri.extractor.ExtractorInfoAdicional;
 import co.edu.uniquindio.gri.extractor.ExtractorTecnicas;
 import co.edu.uniquindio.gri.model.Investigador;
+import co.edu.uniquindio.gri.model.ReconocimientosInvestigador;
 import co.edu.uniquindio.gri.utils.ArrayUtils;
 import co.edu.uniquindio.gri.utils.JSoupUtil;
 
@@ -122,6 +123,12 @@ public class InvestigadorController {
 				if (elem.text().startsWith("Idiomas")) {
 					ArrayList<String> elemIdiomas = utils.ordenarArreglo(elem.toString());
 					extractor.extraerIdiomas(elemIdiomas, investigador);
+				}
+				
+				else if(elem.text().startsWith("Reconocimientos")) {
+					ArrayList<String> reconocimientosInvestigadors = utils.ordenarArreglo(elem.toString());
+					extractor.extraerReconocimientos(reconocimientosInvestigadors, investigador);
+					
 				}
 
 				/*

@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity(name = "PERTENENCIA_INVES")
 @Table(name = "PERTENENCIA_INVES", schema = "gri")
@@ -19,11 +20,15 @@ public class Pertenencia implements Serializable {
 
 	@Column(name = "PERTENENCIA", length = 100)
 	private String pertenencia;
+	
+	@Transient
+	public boolean debeEliminarse;
 
 	public Pertenencia(long investigador_id, String pertenencia) {
 
 		this.investigador_id = investigador_id;
 		this.pertenencia = pertenencia;
+		this.debeEliminarse = false;
 
 	}
 
@@ -46,5 +51,14 @@ public class Pertenencia implements Serializable {
 	public void setPertenencia(String pertenencia) {
 		this.pertenencia = pertenencia;
 	}
+
+	public boolean isDebeEliminarse() {
+		return debeEliminarse;
+	}
+
+	public void setDebeEliminarse(boolean debeEliminarse) {
+		this.debeEliminarse = debeEliminarse;
+	}
+	
 
 }
