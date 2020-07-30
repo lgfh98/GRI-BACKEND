@@ -15,6 +15,7 @@ import co.edu.uniquindio.gri.model.Grupo;
 import co.edu.uniquindio.gri.model.Idiomas;
 import co.edu.uniquindio.gri.model.Investigador;
 import co.edu.uniquindio.gri.model.LineasInvestigacion;
+import co.edu.uniquindio.gri.model.ReconocimientosInvestigador;
 import co.edu.uniquindio.gri.utils.ArrayUtils;
 
 @Service
@@ -72,27 +73,26 @@ public class ExtractorGenerales {
 				nomLinea = nomLinea.trim();
 
 				LineasInvestigacion lineaInvestigacion = new LineasInvestigacion();
-				int pos=utils.BuscarLineasRepetidas(nomLinea);
-				if (pos<0) {
+				int pos = utils.BuscarLineasRepetidas(nomLinea);
+				if (pos < 0) {
 					lineaInvestigacion.setNombre(nomLinea);
 					utils.getLineasInvestigacion().add(lineaInvestigacion);
 					lineas.add(lineaInvestigacion);
-				}else {
+				} else {
 					lineas.add(utils.getLineasInvestigacion().get(pos));
 				}
-				
+
 			}
 
 		}
 		grupo.setLineasInvestigacion(lineas);
 	}
 
-	
 	private InvestigadorController investigadorController;
-	
+
 	@Autowired
 	public ExtractorGenerales(@Lazy InvestigadorController investigadorController) {
-		this.investigadorController=investigadorController;
+		this.investigadorController = investigadorController;
 	}
 
 	/**
@@ -137,6 +137,7 @@ public class ExtractorGenerales {
 			investigador.setNombreInvestigadorAux(investigador.getNombre());
 			investigador.setId(id);
 			investigador.setCategoria("SIN CATEGORÍA");
+			investigador.setSexo("NO ESPECIFICADO");
 			investigador.setNivelAcademico("NO ESPECIFICADO");
 			investigador.setPertenencia("NO ESPECIFICADO");
 
@@ -164,11 +165,18 @@ public class ExtractorGenerales {
 					if (elemInfoPersonal.get(i).startsWith("FORMACIÓN ACADÉMICA")) {
 						investigador.setNivelAcademico(elemInfoPersonal.get(i + 1));
 					}
+					// Estraccion del sexo
+					if (elemInfoPersonal.get(i).startsWith("SEXO")) {
+
+						investigador.setSexo(elemInfoPersonal.get(i + 1));
+
+					}
 
 					try {
 						if (estado.equals("ACTUAL")) {
 							if (elemInfoPersonal.get(i).equals("UNIVERSIDAD DEL QUINDÍO")
-									&& (elemInfoPersonal.get(i + 2).contains("ACTUAL") || elemInfoPersonal.get(i + 2).endsWith("DE"))) {
+									&& (elemInfoPersonal.get(i + 2).contains("ACTUAL")
+											|| elemInfoPersonal.get(i + 2).endsWith("DE"))) {
 								pertenece = true;
 								investigador.setPertenencia("INVESTIGADOR INTERNO");
 							}
@@ -203,8 +211,7 @@ public class ExtractorGenerales {
 	/**
 	 * Metodo que extrae los idiomas con los que el investigador esta familiarizado
 	 * 
-	 * @param elem,
-	 *            Lista de elementos que contiene los idiomas del investigador
+	 * @param elem, Lista de elementos que contiene los idiomas del investigador
 	 */
 	public void extraerIdiomas(ArrayList<String> elem, Investigador investigador) {
 
@@ -246,6 +253,53 @@ public class ExtractorGenerales {
 		}
 	}
 
+	/**
+	 * Metodo que extrae los Reconocimientos con los que el investigador esta
+	 * familiarizado
+	 * 
+	 * @param elem, Lista de elementos que contiene los Reconocimientos del
+	 *              investigador
+	 */
+	public void extraerReconocimientos(ArrayList<String> elem, Investigador investigador) {
+
+		ArrayList<String> auxReconocimientoCadTemp = new ArrayList<String>();
+		ArrayList<ReconocimientosInvestigador> auxReconocimientoTemp = new ArrayList<ReconocimientosInvestigador>();
+
+		for (int i = 1; i < elem.size() - 1; i++) {
+
+			auxReconocimientoCadTemp = utils.organizarReconocimiento(elem.get(i));
+			ReconocimientosInvestigador reconocimiento = new ReconocimientosInvestigador();
+
+			try {
+
+				reconocimiento.setAnio(Integer.parseInt(auxReconocimientoCadTemp.get(0)));
+
+			} catch (Exception e) {
+				
+				
+				reconocimiento.setAnio(0);
+				
+
+			}
+			reconocimiento.setEntidad(auxReconocimientoCadTemp.get(1));
+			reconocimiento.setReconocimiento(auxReconocimientoCadTemp.get(2));
+			reconocimiento.setInvestigador(investigador);
+			auxReconocimientoTemp.add(reconocimiento);
+
+		}
+
+		List<ReconocimientosInvestigador> reconocimientosInves = investigador.getReconocimientos();
+
+		if (reconocimientosInves == null) {
+			investigador.setReconocimientos(auxReconocimientoTemp);
+		} else {
+
+			reconocimientosInves.addAll(auxReconocimientoTemp);
+			investigador.setReconocimientos(reconocimientosInves);
+		}
+
+	}
+
 	public void extraerLineasInvestigacionI(ArrayList<String> elem, Investigador investigador) {
 
 		ArrayList<LineasInvestigacion> lineas = new ArrayList<>();
@@ -260,12 +314,12 @@ public class ExtractorGenerales {
 					nomLinea = nomLinea.trim();
 
 					LineasInvestigacion lineaInvestigacion = new LineasInvestigacion();
-					int pos=utils.BuscarLineasRepetidas(nomLinea);
-					if (pos<0) {
+					int pos = utils.BuscarLineasRepetidas(nomLinea);
+					if (pos < 0) {
 						lineaInvestigacion.setNombre(nomLinea);
 						utils.getLineasInvestigacion().add(lineaInvestigacion);
 						lineas.add(lineaInvestigacion);
-					}else {
+					} else {
 						lineas.add(utils.getLineasInvestigacion().get(pos));
 					}
 				}

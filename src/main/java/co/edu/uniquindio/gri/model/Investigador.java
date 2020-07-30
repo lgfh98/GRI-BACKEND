@@ -34,6 +34,9 @@ public class Investigador implements Serializable {
 	@Column(name = "CATEGORIA", length = 200)
 	private String categoria;
 
+	@Column(name = "SEXO", length = 50)
+	private String sexo;
+
 	@Column(name = "NIVELACADEMICO", length = 200)
 	private String nivelAcademico;
 
@@ -43,6 +46,10 @@ public class Investigador implements Serializable {
 	@OneToMany(mappedBy = "investigador", cascade = CascadeType.ALL)
 	@LazyCollection(LazyCollectionOption.FALSE)
 	private List<Idiomas> idiomas = new ArrayList<Idiomas>();
+
+	@OneToMany(mappedBy = "investigador", cascade = CascadeType.ALL)
+	@LazyCollection(LazyCollectionOption.FALSE)
+	private List<ReconocimientosInvestigador> reconocimientos = new ArrayList<ReconocimientosInvestigador>();
 
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "INVEST_LINEAS", joinColumns = { @JoinColumn(name = "INVESTIGADORES_ID") }, inverseJoinColumns = {
@@ -60,12 +67,13 @@ public class Investigador implements Serializable {
 
 	@OneToMany(mappedBy = "investigadores", cascade = CascadeType.ALL)
 	private List<GruposInves> grupos = new ArrayList<GruposInves>();
-	
+
 	@Transient
 	public String nombreInvestigadorAux;
 
-	public Investigador(long id, String nombre, String categoria, String nivelAcademico, String pertenencia,
-			List<Idiomas> idiomas, List<LineasInvestigacion> lineasInvestigacion, List<Produccion> producciones,
+	public Investigador(long id, String nombre, String categoria, String sexo, String nivelAcademico,
+			String pertenencia, List<Idiomas> idiomas, List<ReconocimientosInvestigador> reconocimientos,
+			List<LineasInvestigacion> lineasInvestigacion, List<Produccion> producciones,
 			List<ProduccionB> produccionesBibliograficas, List<GruposInves> grupos) {
 		this.id = id;
 		this.nombre = nombre;
@@ -73,6 +81,8 @@ public class Investigador implements Serializable {
 		this.nivelAcademico = nivelAcademico;
 		this.pertenencia = pertenencia;
 		this.idiomas = idiomas;
+		this.reconocimientos = reconocimientos;
+		this.sexo = sexo;
 		this.lineasInvestigacion = lineasInvestigacion;
 		this.produccionesBibliograficas = produccionesBibliograficas;
 		this.grupos = grupos;
@@ -104,6 +114,22 @@ public class Investigador implements Serializable {
 
 	public void setCategoria(String categoria) {
 		this.categoria = categoria;
+	}
+
+	public String getSexo() {
+		return sexo;
+	}
+
+	public void setSexo(String sexo) {
+		this.sexo = sexo;
+	}
+
+	public List<ReconocimientosInvestigador> getReconocimientos() {
+		return reconocimientos;
+	}
+
+	public void setReconocimientos(List<ReconocimientosInvestigador> reconocimientos) {
+		this.reconocimientos = reconocimientos;
 	}
 
 	public String getNivelAcademico() {

@@ -48,6 +48,8 @@ public class Main implements CommandLineRunner {
 
 	public List<Grupo> scrapData() throws InterruptedException {
 
+		
+		
 		List<Grupo> gruposInicial = leerDataSet();
 		
 		lineasInvestigacionDAO.deleteAll();
@@ -58,13 +60,15 @@ public class Main implements CommandLineRunner {
 
 		List<Grupo> grupos = new ArrayList<Grupo>();
 		List<Future<Grupo>> resultList = new ArrayList<Future<Grupo>>();
-
+	
 		for (int i = 0; i < urlSet.size(); i++) {
+		
 			Future<Grupo> result = extractor.scrapData(urlSet.get(i), gruposInicial.get(i));
 			resultList.add(result);
 		}
 
 		for (Future<Grupo> future : resultList) {
+			
 			try {
 				grupos.add(future.get());
 			} catch (InterruptedException | ExecutionException e) {
@@ -85,6 +89,8 @@ public class Main implements CommandLineRunner {
 
 	public List<String> llenarUrlSet(List<Grupo> grupos) {
 
+		
+		
 		List<String> urlSet = new ArrayList<String>();
 		for (int i = 0; i < grupos.size(); i++) {
 			String cadena = "00000000000000" + grupos.get(i).getId();
@@ -92,6 +98,7 @@ public class Main implements CommandLineRunner {
 			String url = "https://scienti.colciencias.gov.co/gruplac/jsp/visualiza/visualizagr.jsp?nro=" + cadena;
 			urlSet.add(url);
 		}
+		
 		return urlSet;
 	}
 }
