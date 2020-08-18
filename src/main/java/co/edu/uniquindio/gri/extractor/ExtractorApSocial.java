@@ -66,9 +66,9 @@ public class ExtractorApSocial {
 				actAprSocialAux.add(apropiacionSocial);
 			}
 		}
-		
-		List<ProduccionGrupo> produccion = utils.verificarProducciones(Constantes.ID_EDICION,
-				grupo.getProduccion(), actAprSocialAux);
+
+		List<ProduccionGrupo> produccion = utils.verificarProducciones(Constantes.ID_EDICION, grupo.getProduccion(),
+				actAprSocialAux);
 		grupo.setProduccion(produccion);
 	}
 
@@ -178,8 +178,8 @@ public class ExtractorApSocial {
 			}
 		}
 
-		List<ProduccionGrupo> produccion = utils.verificarProducciones((int)tipo.getId(),
-				grupo.getProduccion(), actAprSocialAux);
+		List<ProduccionGrupo> produccion = utils.verificarProducciones((int) tipo.getId(), grupo.getProduccion(),
+				actAprSocialAux);
 		grupo.setProduccion(produccion);
 	}
 
@@ -198,10 +198,10 @@ public class ExtractorApSocial {
 		Tipo tipo = new Tipo();
 
 		ArrayList<ProduccionGrupo> actAprSocialAux = new ArrayList<>();
-		
-		ArrayList<ProduccionGrupo> contenidoImpreso = new ArrayList<>();		
-		ArrayList<ProduccionGrupo> contenidoMultimedia = new ArrayList<>();		
-		ArrayList<ProduccionGrupo> contenidoVirtual = new ArrayList<>();	
+
+		ArrayList<ProduccionGrupo> contenidoImpreso = new ArrayList<>();
+		ArrayList<ProduccionGrupo> contenidoMultimedia = new ArrayList<>();
+		ArrayList<ProduccionGrupo> contenidoVirtual = new ArrayList<>();
 
 		for (int i = 0; i < elem.size(); i++) {
 
@@ -249,15 +249,15 @@ public class ExtractorApSocial {
 		List<ProduccionGrupo> produccionI = utils.verificarProducciones(Constantes.ID_CONTENIDO_IMPRESO,
 				grupo.getProduccion(), contenidoImpreso);
 		grupo.setProduccion(produccionI);
-		
+
 		List<ProduccionGrupo> produccionM = utils.verificarProducciones(Constantes.ID_CONTENIDO_MULTIMEDIA,
 				grupo.getProduccion(), contenidoMultimedia);
 		grupo.setProduccion(produccionM);
-		
+
 		List<ProduccionGrupo> produccionV = utils.verificarProducciones(Constantes.ID_CONTENIDO_VIRTUAL,
 				grupo.getProduccion(), contenidoVirtual);
 		grupo.setProduccion(produccionV);
-		
+
 	}
 
 	/**
@@ -320,28 +320,31 @@ public class ExtractorApSocial {
 		String autores = "";
 		String referencia = "";
 		String anio = "";
+		boolean booleanEstrategiaPegagogica = false;
+		boolean booleanParticipacionCTI = false;
 
 		TipoProduccion tipoProduccion = new TipoProduccion(Constantes.ID_APROPIACION, Constantes.APROPIACION);
- 
+
 		ArrayList<ProduccionGrupo> actAprSocialAux = new ArrayList<>();
-		
+
 		ArrayList<ProduccionGrupo> estrategiaPedagogica = new ArrayList<>();
 		ArrayList<ProduccionGrupo> participacionCTI = new ArrayList<>();
-		
+
 		Tipo tipo = new Tipo();
 
 		for (int i = 0; i < elem.size(); i++) {
 			ProduccionGrupo apropiacionSocial = new ProduccionGrupo();
-			
+
 			if (elem.get(i).contains("ESTRATEGIAS PEDAGÓGICAS PARA EL FOMENTO A LA CTI")) {
 
-				tipo = new Tipo(Constantes.ID_ESTRATEGIA_PEDAGOGICA, Constantes.ESTRATEGIA_PEDAGOGICA,
+				tipo = new Tipo(Constantes.ID_ESTRATEGIA_PEDAGOGICA, Constantes.ESTRATEGIA_PEDAGOGICA, tipoProduccion);
+				booleanEstrategiaPegagogica = true;
+
+			} else if (elem.get(i).contains("PARTICIPACIÓN CIUDADANA EN PROYECTOS DE CTI")) {
+
+				tipo = new Tipo(Constantes.ID_ESPACIO_PARTICIPACION_CTI, Constantes.ESPACIO_PARTICIPACION_CTI,
 						tipoProduccion);
-
-			} else if (elem.get(i).contains("PARTICIPACIÓN CIUDADANA EN PROYECTOS DE CTI")){
-
-				tipo = new Tipo(Constantes.ID_ESPACIO_PARTICIPACION_CTI, Constantes.ESPACIO_PARTICIPACION_CTI, tipoProduccion);
-
+				booleanParticipacionCTI = true;
 			}
 
 			if (elem.get(i).contains(".-")) {
@@ -362,10 +365,18 @@ public class ExtractorApSocial {
 
 				apropiacionSocial.setAnio(anio);
 				apropiacionSocial.setAutores(autores);
-				apropiacionSocial.setReferencia(referencia);;
+				apropiacionSocial.setReferencia(referencia);
 				apropiacionSocial.setTipo(tipo);
 				apropiacionSocial.setGrupo(grupo);
 				apropiacionSocial.setRepetido("NO");
+
+				if (booleanEstrategiaPegagogica) {
+					utils.identificarRepetidosG(estrategiaPedagogica, apropiacionSocial);
+					estrategiaPedagogica.add(apropiacionSocial);
+				}else if(booleanParticipacionCTI) {
+					utils.identificarRepetidosG(participacionCTI, apropiacionSocial);
+					participacionCTI.add(apropiacionSocial);
+				}
 				utils.identificarRepetidosG(actAprSocialAux, apropiacionSocial);
 				actAprSocialAux.add(apropiacionSocial);
 			}
@@ -374,7 +385,7 @@ public class ExtractorApSocial {
 		List<ProduccionGrupo> produccionP = utils.verificarProducciones(Constantes.ID_ESTRATEGIA_PEDAGOGICA,
 				grupo.getProduccion(), estrategiaPedagogica);
 		grupo.setProduccion(produccionP);
-		
+
 		List<ProduccionGrupo> produccionCTI = utils.verificarProducciones(Constantes.ID_ESPACIO_PARTICIPACION_CTI,
 				grupo.getProduccion(), participacionCTI);
 		grupo.setProduccion(produccionCTI);
@@ -433,11 +444,10 @@ public class ExtractorApSocial {
 		grupo.setProduccion(produccion);
 	}
 
-	
 	/*
 	 * Metodos que extraen informacion de los investigadores
 	 */
-	
+
 	public void extraerEdicionesI(ArrayList<String> elem, Investigador investigador) {
 		String autores = "";
 		String anio = "";
@@ -512,7 +522,7 @@ public class ExtractorApSocial {
 				referencia = referencia.trim();
 			}
 			if (elem.get(i).contains("REALIZADO EL:")) {
-				anio= utils.extraerAnio(referencia);
+				anio = utils.extraerAnio(referencia);
 			}
 			autores = "";
 			if (elem.get(i).contains("PARTICIPANTES")) {
@@ -576,8 +586,8 @@ public class ExtractorApSocial {
 				referencia = referencia.trim();
 			}
 			if (elem.get(i).contains("CREADA EL:")) {
-				anio= utils.extraerAnio(referencia);
-				
+				anio = utils.extraerAnio(referencia);
+
 				actAprSocial.setAutores(autores);
 				actAprSocial.setReferencia(referencia);
 				actAprSocial.setAnio(anio);
@@ -611,9 +621,9 @@ public class ExtractorApSocial {
 		ArrayList<Produccion> actAprSocialAux = new ArrayList<>();
 
 		for (int i = 0; i < elem.size(); i++) {
-			
+
 			Produccion actAprSocial = new Produccion();
-			
+
 			if (elem.get(i).contains("NOMBRE")) {
 				int cont = i + 1;
 				referencia = "";
@@ -627,8 +637,8 @@ public class ExtractorApSocial {
 			}
 			if (elem.get(i).contains("EN LA FECHA")) {
 
-				anio= utils.extraerAnio(referencia);
-				
+				anio = utils.extraerAnio(referencia);
+
 				actAprSocial.setAutores(autores);
 				actAprSocial.setReferencia(referencia);
 				actAprSocial.setAnio(anio);
@@ -663,11 +673,11 @@ public class ExtractorApSocial {
 
 		for (int i = 0; i < elem.size(); i++) {
 			if (elem.get(i).contains("PRODUCCIÓN TÉCNICA - MULTIMEDIA -")) {
-				
+
 				Produccion actAprSocial = new Produccion();
-				
+
 				String aux = elem.get(i + 1).substring(0, elem.get(i + 1).lastIndexOf(",")).replaceAll(", ", ",");
-				
+
 				autores = utils.verificarAutores(aux, investigador);
 				int cont = i + 1;
 				referencia = "";
@@ -679,7 +689,7 @@ public class ExtractorApSocial {
 					cont++;
 				}
 				referencia = referencia.substring(1);
-				anio= utils.extraerAnio(referencia);
+				anio = utils.extraerAnio(referencia);
 				actAprSocial.setAutores(autores);
 				actAprSocial.setReferencia(referencia);
 				actAprSocial.setAnio(anio);
@@ -729,7 +739,7 @@ public class ExtractorApSocial {
 				referencia = referencia.trim();
 			}
 			if (elem.get(i).contains(", EN 1") || elem.get(i).contains(", EN 2")) {
-				anio= utils.extraerAnio(referencia);
+				anio = utils.extraerAnio(referencia);
 				actAprSocial.setAutores(autores);
 				actAprSocial.setReferencia(referencia);
 				actAprSocial.setAnio(anio);
@@ -790,7 +800,7 @@ public class ExtractorApSocial {
 				referencia = referencia.trim();
 			}
 			if (elem.get(i).contains("FINALIZÓ EN :")) {
-				anio= utils.extraerAnio(referencia);
+				anio = utils.extraerAnio(referencia);
 				actAprSocial.setAutores(autores);
 				actAprSocial.setReferencia(referencia);
 				actAprSocial.setAnio(anio);
@@ -839,7 +849,7 @@ public class ExtractorApSocial {
 				referencia = referencia.trim();
 			}
 			if (elem.get(i).contains("REALIZADO EL:")) {
-				anio= utils.extraerAnio(referencia);
+				anio = utils.extraerAnio(referencia);
 				actAprSocial.setAutores(autores);
 				actAprSocial.setReferencia(referencia);
 				actAprSocial.setAnio(anio);
@@ -890,7 +900,7 @@ public class ExtractorApSocial {
 				referencia = referencia.trim();
 			}
 			if (elem.get(i).contains("FINALIZÓ EN :")) {
-				anio= utils.extraerAnio(referencia);
+				anio = utils.extraerAnio(referencia);
 				actAprSocial.setAutores(autores);
 				actAprSocial.setReferencia(referencia);
 				actAprSocial.setAnio(anio);
@@ -914,6 +924,4 @@ public class ExtractorApSocial {
 		}
 	}
 
-	
-	
 }
