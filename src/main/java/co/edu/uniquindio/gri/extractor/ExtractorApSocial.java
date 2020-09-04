@@ -246,17 +246,21 @@ public class ExtractorApSocial {
 			}
 		}
 
-		List<ProduccionGrupo> produccionI = utils.verificarProducciones(Constantes.ID_CONTENIDO_IMPRESO,
-				grupo.getProduccion(), contenidoImpreso);
-		grupo.setProduccion(produccionI);
-
-		List<ProduccionGrupo> produccionM = utils.verificarProducciones(Constantes.ID_CONTENIDO_MULTIMEDIA,
-				grupo.getProduccion(), contenidoMultimedia);
-		grupo.setProduccion(produccionM);
-
-		List<ProduccionGrupo> produccionV = utils.verificarProducciones(Constantes.ID_CONTENIDO_VIRTUAL,
-				grupo.getProduccion(), contenidoVirtual);
-		grupo.setProduccion(produccionV);
+//		List<ProduccionGrupo> produccionI = utils.verificarProducciones(Constantes.ID_CONTENIDO_IMPRESO,
+//				grupo.getProduccion(), contenidoImpreso);
+//		grupo.setProduccion(produccionI);
+//
+//		List<ProduccionGrupo> produccionM = utils.verificarProducciones(Constantes.ID_CONTENIDO_MULTIMEDIA,
+//				grupo.getProduccion(), contenidoMultimedia);
+//		grupo.setProduccion(produccionM);
+//
+//		List<ProduccionGrupo> produccionV = utils.verificarProducciones(Constantes.ID_CONTENIDO_VIRTUAL,
+//				grupo.getProduccion(), contenidoVirtual);
+//		grupo.setProduccion(produccionV);
+		
+		List<ProduccionGrupo> produccion = utils.verificarProducciones((int) tipo.getId(), grupo.getProduccion(),
+				actAprSocialAux);
+		grupo.setProduccion(produccion);
 
 	}
 
@@ -370,25 +374,29 @@ public class ExtractorApSocial {
 				apropiacionSocial.setGrupo(grupo);
 				apropiacionSocial.setRepetido("NO");
 
-				if (booleanEstrategiaPegagogica) {
-					utils.identificarRepetidosG(estrategiaPedagogica, apropiacionSocial);
-					estrategiaPedagogica.add(apropiacionSocial);
-				}else if(booleanParticipacionCTI) {
-					utils.identificarRepetidosG(participacionCTI, apropiacionSocial);
-					participacionCTI.add(apropiacionSocial);
-				}
+				//if (booleanEstrategiaPegagogica) {
+				//	utils.identificarRepetidosG(estrategiaPedagogica, apropiacionSocial);
+				//	estrategiaPedagogica.add(apropiacionSocial);
+				//}else if(booleanParticipacionCTI) {
+				//	utils.identificarRepetidosG(participacionCTI, apropiacionSocial);
+				//	participacionCTI.add(apropiacionSocial);
+				//}
 				utils.identificarRepetidosG(actAprSocialAux, apropiacionSocial);
 				actAprSocialAux.add(apropiacionSocial);
 			}
 		}
 
-		List<ProduccionGrupo> produccionP = utils.verificarProducciones(Constantes.ID_ESTRATEGIA_PEDAGOGICA,
-				grupo.getProduccion(), estrategiaPedagogica);
-		grupo.setProduccion(produccionP);
+		//List<ProduccionGrupo> produccionP = utils.verificarProducciones(Constantes.ID_ESTRATEGIA_PEDAGOGICA,
+		//		grupo.getProduccion(), estrategiaPedagogica);
+		//grupo.setProduccion(produccionP);
 
-		List<ProduccionGrupo> produccionCTI = utils.verificarProducciones(Constantes.ID_ESPACIO_PARTICIPACION_CTI,
-				grupo.getProduccion(), participacionCTI);
-		grupo.setProduccion(produccionCTI);
+		//List<ProduccionGrupo> produccionCTI = utils.verificarProducciones(Constantes.ID_ESPACIO_PARTICIPACION_CTI,
+		//		grupo.getProduccion(), participacionCTI);
+		//grupo.setProduccion(produccionCTI);
+		
+		List<ProduccionGrupo> produccion = utils.verificarProducciones((int) tipo.getId(), grupo.getProduccion(),
+				actAprSocialAux);
+		grupo.setProduccion(produccion);
 	}
 
 	/**
